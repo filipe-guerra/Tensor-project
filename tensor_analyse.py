@@ -1,10 +1,11 @@
-import tensorflow as tf
+# import tensorflow as tf
 import numpy as np
 import tensorflow_text as text 
 import tensorflow_datasets as tfds
 
 class New_analyse:
   def __init__(self, all_text):
+    # self.paragraphs = all_text
     tokenizer = text.UnicodeScriptTokenizer()
     (self.tokens, self.offset_starts, self.offset_limits) = tokenizer.tokenize_with_offsets(all_text) 
     self.bigrams = text.ngrams(self.tokens, 2, reduction_type=text.Reduction.STRING_JOIN)
@@ -30,6 +31,7 @@ class Compare_arrays:
           for new_item_num, new_item in enumerate(self.new.encoded):
               if np.array_equiv(item, new_item):
                   self.linked[old_item_num] = new_item_num
+                  break
 
       self.fill_old_unlinked()
       self.fill_new_unlinked()
@@ -40,19 +42,19 @@ class Compare_arrays:
       self.old_unlinked = [item for item in num_old_items if item not in linked_keys]
       
     def fill_new_unlinked(self):
-      num_old_items = list(range(len(self.new.encoded)))
+      num_new_items = list(range(len(self.new.encoded)))
       linked_values = list(self.linked.values())
-      self.new_unlinked = [item for item in num_old_items if item not in linked_values]
+      self.new_unlinked = [item for item in num_new_items if item not in linked_values]
       
-    def old_changed_paragraphs(self):
-      for i in self.old_unlinked:
-        print("----- old paragraph changed -----")
-        print(self.old.paragraphs[i][0])
+    # def old_changed_paragraphs(self):
+    #   for i in self.old_unlinked:
+    #     print("----- old paragraph changed -----")
+    #     print(self.old.paragraphs[i][0])
 
-    def new_changed_paragraphs(self):
-      for i in self.new_unlinked:
-        print("----- new paragraph changed -----")
-        print(self.new.paragraphs[i][0])
+    # def new_changed_paragraphs(self):
+    #   for i in self.new_unlinked:
+    #     print("----- new paragraph changed -----")
+    #     print(self.new.paragraphs[i][0])
 
 def set_encoder(text_tokens):
   vocabulary_set = set()
